@@ -1,4 +1,4 @@
-package eu.jw.tbo.presentation.theme
+package eu.jw.tbo.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

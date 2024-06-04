@@ -19,7 +19,7 @@ object AppModule {
     @Singleton
     fun provideStarWarsApi(): CoinGeckoApi {
         return Retrofit.Builder()
-            .baseUrl("https://api.coingecko.com/api/v3")
+            .baseUrl("https://api.coingecko.com")
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()

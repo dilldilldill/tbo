@@ -1,4 +1,4 @@
-package eu.jw.tbo.presentation.theme
+package eu.jw.tbo.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package eu.jw.tbo.presentation.theme
+package eu.jw.tbo.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
