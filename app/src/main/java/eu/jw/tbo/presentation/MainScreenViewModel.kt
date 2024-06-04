@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.jw.swapi.util.Resource
 import eu.jw.tbo.domain.repository.CoinRepository
+import eu.jw.tbo.util.SharedPreferencesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ class MainScreenViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val stateKey = "state"
-    var state = savedStateHandle.getStateFlow(stateKey, MainScreenState())
+    var state = savedStateHandle.getStateFlow(stateKey, SharedPreferencesManager.getState())
         private set
 
     init {
@@ -30,6 +31,7 @@ class MainScreenViewModel @Inject constructor(
             is MainScreenEvent.ChangedCurrency -> {
                 getCurrentPrice(event.currency)
                 getPriceHistory(event.currency)
+
                 savedStateHandle.updateState {
                     it.copy(
                         selectedCurrency = event.currency
@@ -68,6 +70,8 @@ class MainScreenViewModel @Inject constructor(
                     currentPriceError = null
                 )
             }
+
+            SharedPreferencesManager.saveState(state = state.value)
         }
     }
 
@@ -100,6 +104,8 @@ class MainScreenViewModel @Inject constructor(
                     priceHistoryError = null
                 )
             }
+
+            SharedPreferencesManager.saveState(state = state.value)
         }
     }
 

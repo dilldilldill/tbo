@@ -7,11 +7,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MainScreenState(
     val currentPrice: CoinPrice? = null,
-    val currentPriceLoading: Boolean = false,
+    val currentPriceLoading: Boolean = true,
     val currentPriceError: String? = null,
 
     val priceHistory: List<CoinPrice> = emptyList(),
-    val priceHistoryLoading: Boolean = false,
+    val priceHistoryLoading: Boolean = true,
     val priceHistoryError: String? = null,
 
     val selectedCurrency: String = "eur",
