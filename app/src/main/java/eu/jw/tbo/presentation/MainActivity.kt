@@ -77,7 +77,7 @@ fun MainScreen(modifier: Modifier = Modifier, state: MainScreenState) {
                 color = Color.Black,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 24.sp,
-                modifier = modifier
+                modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 16.dp)
             )
@@ -87,15 +87,14 @@ fun MainScreen(modifier: Modifier = Modifier, state: MainScreenState) {
                 color = Color.Gray,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
-                modifier = modifier
+                modifier = Modifier
                     .align(Alignment.CenterHorizontally)
             )
         }
 
-
         if (state.priceHistoryLoading) {
             CircularProgressIndicator(
-                modifier = modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
 
@@ -152,14 +151,14 @@ fun GreetingPreview() {
         MainScreen(
             state = MainScreenState(
                 currentPrice = CoinPrice(1.0, LocalDateTime.now()),
-                currentPriceLoading = true,
+                currentPriceLoading = false,
                 currentPriceError =  null,
 
                 priceHistory = listOf(
                     CoinPrice(1.0, LocalDateTime.now()),
                     CoinPrice(1.0, LocalDateTime.now())
                 ),
-                priceHistoryLoading = true,
+                priceHistoryLoading = false,
                 priceHistoryError = null
             )
         )

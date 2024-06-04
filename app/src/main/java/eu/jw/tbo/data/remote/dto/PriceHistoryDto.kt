@@ -20,6 +20,6 @@ data class PriceHistoryDto(
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime()
             )
-        }
+        }.dropLast(1).sortedByDescending { it.time }
     }
 }
