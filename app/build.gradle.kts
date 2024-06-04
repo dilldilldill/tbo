@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "eu.jw.tbo"
-        minSdk = 33
+        minSdk = 34
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

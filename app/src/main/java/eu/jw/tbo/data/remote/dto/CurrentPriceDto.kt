@@ -3,6 +3,7 @@ package eu.jw.tbo.data.remote.dto
 import eu.jw.tbo.domain.models.CoinPrice
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.TimeZone
 
 data class CurrentPriceDto(
@@ -11,10 +12,9 @@ data class CurrentPriceDto(
     fun toCoinPrice(): CoinPrice {
         return CoinPrice(
             price = bitcoin.eur,
-            time = LocalDateTime.ofInstant(
-                Instant.ofEpochMilli(bitcoin.last_updated_at),
-                TimeZone.getDefault().toZoneId()
-            )
+            time = Instant.ofEpochMilli(bitcoin.last_updated_at)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime()
         )
     }
 }

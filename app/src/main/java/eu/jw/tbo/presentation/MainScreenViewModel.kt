@@ -27,21 +27,19 @@ class MainScreenViewModel @Inject constructor(
         savedStateHandle.updateState {
             it.copy(
                 currentPrice = null,
-                loading = true,
-                error = null
+                currentPriceLoading = true,
+                currentPriceError = null
             )
         }
 
         viewModelScope.launch {
             val response = repository.getCurrentPrice()
-            println("HELLO1 ${response.data}")
-
             if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(
                         currentPrice = null,
-                        loading = false,
-                        error = response.message
+                        currentPriceLoading = false,
+                        currentPriceError = response.message
                     )
                 }
                 return@launch
@@ -50,8 +48,8 @@ class MainScreenViewModel @Inject constructor(
             savedStateHandle.updateState {
                 it.copy(
                     currentPrice = response.data,
-                    loading = false,
-                    error = null
+                    currentPriceLoading = false,
+                    currentPriceError = null
                 )
             }
         }
@@ -61,20 +59,19 @@ class MainScreenViewModel @Inject constructor(
         savedStateHandle.updateState {
             it.copy(
                 priceHistory = emptyList(),
-                loading = true,
-                error = null
+                priceHistoryLoading = true,
+                priceHistoryError = null
             )
         }
 
         viewModelScope.launch {
             val response = repository.getPriceHistory()
-            println("HELLO2 ${response.message}")
             if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(
                         priceHistory = emptyList(),
-                        loading = false,
-                        error = response.message
+                        priceHistoryLoading = false,
+                        priceHistoryError = response.message
                     )
                 }
                 return@launch
@@ -83,8 +80,8 @@ class MainScreenViewModel @Inject constructor(
             savedStateHandle.updateState {
                 it.copy(
                     priceHistory = response.data!!,
-                    loading = false,
-                    error = null
+                    priceHistoryLoading = false,
+                    priceHistoryError = null
                 )
             }
         }

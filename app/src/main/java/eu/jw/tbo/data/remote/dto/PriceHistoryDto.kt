@@ -2,7 +2,11 @@ package eu.jw.tbo.data.remote.dto
 
 import eu.jw.tbo.domain.models.CoinPrice
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.TimeZone
 
 data class PriceHistoryDto(
@@ -12,10 +16,9 @@ data class PriceHistoryDto(
         return prices.map {
             CoinPrice(
                 price = it[1],
-                time = LocalDateTime.ofInstant(
-                    Instant.ofEpochMilli(it[0].toLong()),
-                    TimeZone.getDefault().toZoneId()
-                )
+                time = Instant.ofEpochMilli(it[0].toLong())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime()
             )
         }
     }

@@ -7,7 +7,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MainScreenState(
     val currentPrice: CoinPrice? = null,
+    val currentPriceLoading: Boolean = false,
+    val currentPriceError: String? = null,
+
     val priceHistory: List<CoinPrice> = emptyList(),
-    val loading: Boolean = false,
-    val error: String? = null
+    val priceHistoryLoading: Boolean = false,
+    val priceHistoryError: String? = null
 ): Parcelable

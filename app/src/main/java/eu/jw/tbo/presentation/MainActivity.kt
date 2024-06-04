@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,14 +22,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import eu.jw.tbo.domain.models.CoinPrice
 import eu.jw.tbo.presentation.ui.theme.TboTheme
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
+private val timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss")
+private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.y")
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -53,36 +60,71 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, state: MainScreenState) {
-    Column {
-        if (state.loading) {
+    Column(modifier = modifier) {
+        if (state.currentPriceLoading) {
             CircularProgressIndicator(
                 modifier = modifier.align(Alignment.CenterHorizontally)
             )
         }
 
-        if (!state.error.isNullOrBlank()) {
-            Text(text = "Error: ${state.error}", color = Color.Red)
+        if (!state.currentPriceError.isNullOrBlank()) {
+            Text(text = "Error: ${state.priceHistoryError}", color = Color.Red)
+        }
+
+        state.currentPrice?.let {
+            Text(
+                text = "${it.price} €",
+                color = Color.Black,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 24.sp,
+                modifier = modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp)
+            )
+
+            Text(
+                text = "(${timeFormatter.format(it.time)})",
+                color = Color.Gray,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 14.sp,
+                modifier = modifier
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+
+
+        if (state.priceHistoryLoading) {
+            CircularProgressIndicator(
+                modifier = modifier.align(Alignment.CenterHorizontally)
+            )
+        }
+
+        if (!state.priceHistoryError.isNullOrBlank()) {
+            Text(text = "Error: ${state.priceHistoryError}", color = Color.Red)
+        }
+
+        if (state.priceHistory.isNotEmpty()) {
+            PriceTable(state.priceHistory)
         }
     }
-    PriceTable(state.priceHistory)
+
 }
 
 @Composable
 fun PriceTable(prices: List<CoinPrice>) {
-    val column1Weight = .3f // 30%
-    val column2Weight = .7f // 70%
+    val column1Weight = .3f
+    val column2Weight = .7f
 
     LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
-        // Here is the header
         item {
             Row(Modifier.background(Color.Gray)) {
-                TableCell(text = "Column 1", weight = column1Weight)
-                TableCell(text = "Column 2", weight = column2Weight)
+                TableCell(text = "Date", weight = column1Weight)
+                TableCell(text = "Price (€)", weight = column2Weight)
             }
         }
         items(prices) {
             Row(Modifier.fillMaxWidth()) {
-                TableCell(text = it.time.toString(), weight = column1Weight)
+                TableCell(text = dateFormatter.format(it.time), weight = column1Weight)
                 TableCell(text = it.price.toString(), weight = column2Weight)
             }
         }
@@ -90,7 +132,7 @@ fun PriceTable(prices: List<CoinPrice>) {
 }
 
 @Composable
-fun TableCell(
+fun RowScope.TableCell(
     text: String,
     weight: Float
 ) {
@@ -98,7 +140,7 @@ fun TableCell(
         text = text,
         Modifier
             .border(1.dp, Color.Black)
-//            .weight(weight)
+            .weight(weight)
             .padding(8.dp)
     )
 }
@@ -107,6 +149,19 @@ fun TableCell(
 @Composable
 fun GreetingPreview() {
     TboTheme {
-//        MainScreen()
+        MainScreen(
+            state = MainScreenState(
+                currentPrice = CoinPrice(1.0, LocalDateTime.now()),
+                currentPriceLoading = true,
+                currentPriceError =  null,
+
+                priceHistory = listOf(
+                    CoinPrice(1.0, LocalDateTime.now()),
+                    CoinPrice(1.0, LocalDateTime.now())
+                ),
+                priceHistoryLoading = true,
+                priceHistoryError = null
+            )
+        )
     }
 }
