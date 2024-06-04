@@ -18,6 +18,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,14 +28,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import eu.jw.tbo.domain.models.CoinPrice
 import eu.jw.tbo.presentation.ui.theme.TboTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-private val timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss")
+private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.y")
 
 @AndroidEntryPoint
@@ -47,6 +53,17 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val viewModel = hiltViewModel<MainScreenViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
+
+                    LaunchedEffect(Unit) {
+                        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                            withContext(Dispatchers.Default) {
+                                while (true) {
+                                    viewModel.getCurrentPrice()
+                                    delay(60_000)
+                                }
+                            }
+                        }
+                    }
 
                     MainScreen(
                         modifier = Modifier.padding(innerPadding),
@@ -111,20 +128,20 @@ fun MainScreen(modifier: Modifier = Modifier, state: MainScreenState) {
 
 @Composable
 fun PriceTable(prices: List<CoinPrice>) {
-    val column1Weight = .3f
-    val column2Weight = .7f
+    val dateColumnWeight = .3f
+    val priceColumnWeight = .7f
 
     LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
         item {
             Row(Modifier.background(Color.Gray)) {
-                TableCell(text = "Date", weight = column1Weight)
-                TableCell(text = "Price (€)", weight = column2Weight)
+                TableCell(text = "Date", weight = dateColumnWeight)
+                TableCell(text = "Price (€)", weight = priceColumnWeight)
             }
         }
         items(prices) {
             Row(Modifier.fillMaxWidth()) {
-                TableCell(text = dateFormatter.format(it.time), weight = column1Weight)
-                TableCell(text = it.price.toString(), weight = column2Weight)
+                TableCell(text = dateFormatter.format(it.time), weight = dateColumnWeight)
+                TableCell(text = it.price.toString(), weight = priceColumnWeight)
             }
         }
     }

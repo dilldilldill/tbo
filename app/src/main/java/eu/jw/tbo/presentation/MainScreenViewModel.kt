@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.jw.swapi.util.Resource
 import eu.jw.tbo.domain.repository.CoinRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,11 +21,10 @@ class MainScreenViewModel @Inject constructor(
         private set
 
     init {
-        getCurrentPrice()
         getPriceHistory()
     }
 
-    private fun getCurrentPrice() {
+    fun getCurrentPrice() {
         savedStateHandle.updateState {
             it.copy(
                 currentPrice = null,
