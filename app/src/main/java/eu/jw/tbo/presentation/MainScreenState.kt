@@ -12,5 +12,8 @@ data class MainScreenState(
 
     val priceHistory: List<CoinPrice> = emptyList(),
     val priceHistoryLoading: Boolean = false,
-    val priceHistoryError: String? = null
+    val priceHistoryError: String? = null,
+
+    val selectedCurrency: String = "eur",
+    val supportedCurrencies: List<String> = emptyList()
 ): Parcelable

@@ -20,4 +20,7 @@ interface CoinGeckoApi {
         @Query("ids") coinId: String,
         @Query("vs_currencies") currency: String
     ): Response<CurrentPriceDto>
+
+    @GET("/api/v3/simple/supported_vs_currencies")
+    suspend fun getSupportedCurrencies(): Response<List<String>>
 }

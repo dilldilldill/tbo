@@ -10,8 +10,8 @@ import javax.inject.Inject
 class CoinRepositoryImpl @Inject constructor(
     private val api: CoinGeckoApi
 ): CoinRepository {
-    override suspend fun getCurrentPrice(): Resource<CoinPrice> {
-        val response = api.getCurrentPrice("bitcoin", "eur")
+    override suspend fun getCurrentPrice(currency: String): Resource<CoinPrice> {
+        val response = api.getCurrentPrice("bitcoin", currency)
         if (response.isSuccessful) {
             val priceDto = response.body() ?: return Resource.Error(message = "Received empty body for current price")
             return Resource.Success(priceDto.toCoinPrice())
@@ -19,11 +19,20 @@ class CoinRepositoryImpl @Inject constructor(
         return Resource.Error(message = parseError(response.raw()))
     }
 
-    override suspend fun getPriceHistory(): Resource<List<CoinPrice>> {
-        val response = api.getPriceHistory("bitcoin", "eur", 14)
+    override suspend fun getPriceHistory(currency: String): Resource<List<CoinPrice>> {
+        val response = api.getPriceHistory("bitcoin", currency, 14)
         if (response.isSuccessful) {
             val historyDto = response.body() ?: return Resource.Error(message = "Received empty body for price history")
             return Resource.Success(historyDto.toCoinPriceList())
+        }
+        return Resource.Error(message = parseError(response.raw()))
+    }
+
+    override suspend fun getSupportedCurrencies(): Resource<List<String>> {
+        val response = api.getSupportedCurrencies()
+        if (response.isSuccessful) {
+            val currencies = response.body() ?: return Resource.Error(message = "Received empty body for supported currencies")
+            return Resource.Success(currencies)
         }
         return Resource.Error(message = parseError(response.raw()))
     }

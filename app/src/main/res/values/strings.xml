@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">tbo</string>
+    <string name="selected_currency">Selected currency</string>
 </resources>

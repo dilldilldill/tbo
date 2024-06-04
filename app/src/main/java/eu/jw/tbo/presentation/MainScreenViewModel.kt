@@ -21,10 +21,25 @@ class MainScreenViewModel @Inject constructor(
         private set
 
     init {
-        getPriceHistory()
+        getSupportedCurrencies()
+        getPriceHistory(state.value.selectedCurrency)
     }
 
-    fun getCurrentPrice() {
+    fun onEvent(event: MainScreenEvent) {
+        when (event) {
+            is MainScreenEvent.ChangedCurrency -> {
+                getCurrentPrice(event.currency)
+                getPriceHistory(event.currency)
+                savedStateHandle.updateState {
+                    it.copy(
+                        selectedCurrency = event.currency
+                    )
+                }
+            }
+        }
+    }
+
+    fun getCurrentPrice(currency: String = state.value.selectedCurrency) {
         savedStateHandle.updateState {
             it.copy(
                 currentPrice = null,
@@ -34,7 +49,7 @@ class MainScreenViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            val response = repository.getCurrentPrice()
+            val response = repository.getCurrentPrice(currency)
             if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(
@@ -56,7 +71,7 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getPriceHistory() {
+    fun getPriceHistory(currency: String = state.value.selectedCurrency) {
         savedStateHandle.updateState {
             it.copy(
                 priceHistory = emptyList(),
@@ -66,7 +81,7 @@ class MainScreenViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            val response = repository.getPriceHistory()
+            val response = repository.getPriceHistory(currency)
             if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(
@@ -84,6 +99,19 @@ class MainScreenViewModel @Inject constructor(
                     priceHistoryLoading = false,
                     priceHistoryError = null
                 )
+            }
+        }
+    }
+
+    private fun getSupportedCurrencies() {
+        viewModelScope.launch {
+            val response = repository.getSupportedCurrencies()
+            if (response is Resource.Success) {
+                savedStateHandle.updateState {
+                    it.copy(
+                        supportedCurrencies = response.data!!
+                    )
+                }
             }
         }
     }
