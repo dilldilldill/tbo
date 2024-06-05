@@ -112,12 +112,22 @@ class MainScreenViewModel @Inject constructor(
     private fun getSupportedCurrencies() {
         viewModelScope.launch {
             val response = repository.getSupportedCurrencies()
-            if (response is Resource.Success) {
+
+            if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(
-                        supportedCurrencies = response.data!!
+                        priceHistoryLoading = false,
+                        supportedCurrenciesError = response.message
                     )
                 }
+                return@launch
+            }
+
+            savedStateHandle.updateState {
+                it.copy(
+                    supportedCurrencies = response.data!!,
+                    supportedCurrenciesError = null
+                )
             }
         }
     }

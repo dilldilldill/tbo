@@ -58,6 +58,12 @@ fun MainScreen(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (!state.supportedCurrenciesError.isNullOrBlank()) {
+            Text(
+                text = "Error: ${state.supportedCurrenciesError}", color = Color.Red
+            )
+        }
+
         CurrencySelector(
             label = stringResource(R.string.main_screen_dropdown_title_selected_currency),
             state = state,
@@ -69,7 +75,7 @@ fun MainScreen(
 
         if (!state.currentPriceError.isNullOrBlank()) {
             Text(
-                text = "Error: ${state.priceHistoryError}", color = Color.Red
+                text = "Error: ${state.currentPriceError}", color = Color.Red
             )
         }
 
