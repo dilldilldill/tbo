@@ -3,5 +3,5 @@ A simple app displaying data taken from CoinGecko API (https://docs.coingecko.co
 using Kotlin, Jetpack Compose, Dagger Hilt, Retrofit and MockWebServer
 
 #### How to build
-In order to build the project add your API key to your local.properties file with the key 'API_KEY' like so:
+In order to build the project add your API key to your local.properties file with the key `API_KEY`:
 `API_KEY=example-api-key`
