@@ -47,7 +47,6 @@ object SharedPreferencesManager {
     }.create()
 
     fun init(context: Context) {
-        println("HELLO context ${context}")
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 

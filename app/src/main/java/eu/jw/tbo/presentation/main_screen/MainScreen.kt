@@ -82,6 +82,7 @@ fun MainScreen(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 16.dp)
+                    .testTag(TestTags.CURRENT_PRICE_TEXT)
             )
 
             Text(
@@ -135,7 +136,9 @@ fun PriceTable(prices: List<CoinPrice>, state: MainScreenState, numberFormat: Nu
                     text = dateFormatter.format(it.time), weight = dateColumnWeight
                 )
                 TableCell(
-                    text = numberFormat.format(it.price), weight = priceColumnWeight
+                    text = numberFormat.format(it.price),
+                    weight = priceColumnWeight,
+                    modifier = Modifier.testTag(TestTags.PRICE_TABLE_DATA_ROW_PRICE_VALUE)
                 )
             }
         }
@@ -143,10 +146,10 @@ fun PriceTable(prices: List<CoinPrice>, state: MainScreenState, numberFormat: Nu
 }
 
 @Composable
-fun RowScope.TableCell(text: String, weight: Float) {
+fun RowScope.TableCell(modifier: Modifier = Modifier, text: String, weight: Float) {
     Text(
         text = text,
-        Modifier
+        modifier = modifier
             .border(1.dp, Color.Black)
             .weight(weight)
             .padding(8.dp)
@@ -164,7 +167,8 @@ fun CurrencySelector(
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
-        modifier = modifier,
+        modifier = modifier
+            .testTag(TestTags.CURRENCY_DROPDOWN_MENU),
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
@@ -186,6 +190,7 @@ fun CurrencySelector(
         ) {
             state.supportedCurrencies.forEach {
                 DropdownMenuItem(
+                    modifier = Modifier.testTag(TestTags.CURRENCY_DROPDOWN_MENU_ITEM),
                     text = {
                         Text(
                             text = it.uppercase(),

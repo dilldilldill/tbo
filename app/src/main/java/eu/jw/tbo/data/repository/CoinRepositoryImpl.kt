@@ -46,7 +46,7 @@ class CoinRepositoryImpl @Inject constructor(
                     R.string.repository_error_empty_body_supported_currencies
                 )
             )
-            return Resource.Success(currencies)
+            return Resource.Success(currencies.sorted())
         }
         return Resource.Error(message = parseError(response.raw()))
     }
