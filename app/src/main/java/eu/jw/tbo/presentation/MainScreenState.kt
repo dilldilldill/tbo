@@ -16,4 +16,4 @@ data class MainScreenState(
 
     val selectedCurrency: String = "eur",
     val supportedCurrencies: List<String> = emptyList()
-): Parcelable
+) : Parcelable

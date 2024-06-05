@@ -35,10 +35,11 @@ import eu.jw.tbo.R
 import eu.jw.tbo.domain.models.CoinPrice
 import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.Locale
 
-private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.y")
+private val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)
+private val dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 
 @Composable
 fun MainScreen(
@@ -56,7 +57,7 @@ fun MainScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CurrencySelector(
-            label = stringResource(R.string.selected_currency),
+            label = stringResource(R.string.main_screen_dropdown_title_selected_currency),
             state = state,
             onEvent = onEvent,
             modifier = Modifier
@@ -66,8 +67,7 @@ fun MainScreen(
 
         if (!state.currentPriceError.isNullOrBlank()) {
             Text(
-                text = "Error: ${state.priceHistoryError}",
-                color = Color.Red
+                text = "Error: ${state.priceHistoryError}", color = Color.Red
             )
         }
 
@@ -87,15 +87,13 @@ fun MainScreen(
                 color = Color.Gray,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
 
         if (!state.priceHistoryError.isNullOrBlank()) {
             Text(
-                text = "Error: ${state.priceHistoryError}",
-                color = Color.Red
+                text = "Error: ${state.priceHistoryError}", color = Color.Red
             )
         }
 
@@ -114,17 +112,29 @@ fun PriceTable(prices: List<CoinPrice>, state: MainScreenState, numberFormat: Nu
     LazyColumn(
         Modifier
             .fillMaxSize()
-            .padding(16.dp)) {
+            .padding(16.dp)
+    ) {
         item {
             Row(Modifier.background(Color.Gray)) {
-                TableCell(text = "Date", weight = dateColumnWeight)
-                TableCell(text = "Price (${state.selectedCurrency.uppercase()})", weight = priceColumnWeight)
+                TableCell(
+                    text = stringResource(R.string.main_screen_price_table_column_title_date),
+                    weight = dateColumnWeight
+                )
+                TableCell(
+                    text = "${stringResource(R.string.main_screen_price_table_column_title_price)} " +
+                            "(${state.selectedCurrency.uppercase()})",
+                    weight = priceColumnWeight
+                )
             }
         }
         items(prices) {
             Row(Modifier.fillMaxWidth()) {
-                TableCell(text = dateFormatter.format(it.time), weight = dateColumnWeight)
-                TableCell(text = numberFormat.format(it.price), weight = priceColumnWeight)
+                TableCell(
+                    text = dateFormatter.format(it.time), weight = dateColumnWeight
+                )
+                TableCell(
+                    text = numberFormat.format(it.price), weight = priceColumnWeight
+                )
             }
         }
     }

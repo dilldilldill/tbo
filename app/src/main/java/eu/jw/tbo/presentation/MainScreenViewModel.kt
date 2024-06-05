@@ -4,11 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.jw.swapi.util.Resource
+import eu.jw.tbo.util.Resource
 import eu.jw.tbo.domain.repository.CoinRepository
 import eu.jw.tbo.util.SharedPreferencesManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,14 +14,14 @@ import javax.inject.Inject
 class MainScreenViewModel @Inject constructor(
     private val repository: CoinRepository,
     private val savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
     private val stateKey = "state"
     var state = savedStateHandle.getStateFlow(stateKey, SharedPreferencesManager.getState())
         private set
 
     init {
         getSupportedCurrencies()
-        getPriceHistory(state.value.selectedCurrency)
+        getPriceHistory()
     }
 
     fun onEvent(event: MainScreenEvent) {
@@ -52,6 +50,7 @@ class MainScreenViewModel @Inject constructor(
 
         viewModelScope.launch {
             val response = repository.getCurrentPrice(currency)
+
             if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(
@@ -86,6 +85,7 @@ class MainScreenViewModel @Inject constructor(
 
         viewModelScope.launch {
             val response = repository.getPriceHistory(currency)
+
             if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(

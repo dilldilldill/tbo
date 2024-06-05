@@ -1,6 +1,6 @@
 package eu.jw.tbo.data.remote.dto
 
-data class CoinDto(
-    val currency: Double,
+data class CoinPriceDto(
+    val price: Double,
     val lastUpdatedAt: Long
 )

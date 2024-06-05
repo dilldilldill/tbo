@@ -8,4 +8,4 @@ import java.time.LocalDateTime
 data class CoinPrice(
     val price: Double,
     val time: LocalDateTime
-): Parcelable
+) : Parcelable

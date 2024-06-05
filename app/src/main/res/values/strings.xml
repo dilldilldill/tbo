@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">tbo</string>
-    <string name="selected_currency">Selected currency</string>
+    <string name="main_screen_dropdown_title_selected_currency">Selected currency</string>
+    <string name="main_screen_price_table_column_title_date">Date</string>
+    <string name="main_screen_price_table_column_title_price">Price</string>
+    <string name="repository_error_empty_body_current_price">Received empty body for current price</string>
+    <string name="repository_error_empty_body_price_history">Received empty body for price history</string>
+    <string name="repository_error_empty_body_supported_currencies">Received empty body for supported currencies</string>
+    <string name="repository_error_no_error_message">No error message</string>
 </resources>

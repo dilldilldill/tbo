@@ -1,6 +1,6 @@
 package eu.jw.tbo.domain.repository
 
-import eu.jw.swapi.util.Resource
+import eu.jw.tbo.util.Resource
 import eu.jw.tbo.domain.models.CoinPrice
 
 interface CoinRepository {

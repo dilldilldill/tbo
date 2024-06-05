@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                                     // Get current price automatically every 5
                                     // minutes or when activity is resumed
                                     viewModel.getCurrentPrice()
-                                    delay(5*60_000)
+                                    delay(5 * 60_000)
                                 }
                             }
                         }
@@ -96,14 +96,12 @@ fun GreetingPreview() {
             state = MainScreenState(
                 currentPrice = CoinPrice(63_540.0, LocalDateTime.now()),
                 currentPriceLoading = false,
-                currentPriceError =  null,
 
                 priceHistory = listOf(
                     CoinPrice(62_001.0, LocalDateTime.now()),
                     CoinPrice(61_200.0, LocalDateTime.now())
                 ),
-                priceHistoryLoading = false,
-                priceHistoryError = null
+                priceHistoryLoading = false
             ),
             onEvent = {}
         )

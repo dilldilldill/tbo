@@ -18,7 +18,8 @@ import java.time.ZoneOffset
 
 /**
  * SharedPreferencesManager is used to write the screen state into persistent storage,
- * so we can display the data right away after app start up
+ * so we can display the data right away after app start up and remember which currency
+ * was selected last time
  */
 object SharedPreferencesManager {
     private const val PREF_NAME = "TboPreferences"
@@ -29,9 +30,7 @@ object SharedPreferencesManager {
     private var gson = GsonBuilder().apply {
         registerTypeAdapter(LocalDateTime::class.java, object : JsonSerializer<LocalDateTime> {
             override fun serialize(
-                src: LocalDateTime?,
-                typeOfSrc: Type?,
-                context: JsonSerializationContext?
+                src: LocalDateTime?, typeOfSrc: Type?, context: JsonSerializationContext?
             ): JsonElement {
                 val sec: Long = src?.toInstant(ZoneOffset.UTC)?.epochSecond ?: 0
                 return JsonPrimitive(sec)
@@ -39,9 +38,7 @@ object SharedPreferencesManager {
         })
         registerTypeAdapter(LocalDateTime::class.java, object : JsonDeserializer<LocalDateTime> {
             override fun deserialize(
-                json: JsonElement?,
-                typeOfT: Type?,
-                context: JsonDeserializationContext?
+                json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?
             ): LocalDateTime {
                 val instant = Instant.ofEpochSecond(json!!.asJsonPrimitive.asLong)
                 return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
