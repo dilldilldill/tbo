@@ -27,12 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.jw.tbo.R
 import eu.jw.tbo.domain.models.CoinPrice
+import eu.jw.tbo.util.TestTags
 import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -128,7 +130,7 @@ fun PriceTable(prices: List<CoinPrice>, state: MainScreenState, numberFormat: Nu
             }
         }
         items(prices) {
-            Row(Modifier.fillMaxWidth()) {
+            Row(Modifier.fillMaxWidth().testTag(TestTags.PRICE_TABLE_DATA_ROW)) {
                 TableCell(
                     text = dateFormatter.format(it.time), weight = dateColumnWeight
                 )

@@ -40,6 +40,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     fun getCurrentPrice(currency: String = state.value.selectedCurrency) {
+        println("HELLO getCurrentPrice")
         savedStateHandle.updateState {
             it.copy(
                 currentPrice = null,
@@ -75,6 +76,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     fun getPriceHistory(currency: String = state.value.selectedCurrency) {
+        println("HELLO getPriceHistory")
         savedStateHandle.updateState {
             it.copy(
                 priceHistory = emptyList(),
@@ -110,6 +112,7 @@ class MainScreenViewModel @Inject constructor(
     }
 
     private fun getSupportedCurrencies() {
+        println("HELLO getSupportedCurrencies")
         viewModelScope.launch {
             val response = repository.getSupportedCurrencies()
             if (response is Resource.Success) {
