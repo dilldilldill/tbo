@@ -25,6 +25,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import eu.jw.tbo.domain.models.CoinPrice
+import eu.jw.tbo.presentation.main_screen.MainScreen
+import eu.jw.tbo.presentation.main_screen.MainScreenState
+import eu.jw.tbo.presentation.main_screen.MainScreenViewModel
 import eu.jw.tbo.presentation.ui.theme.TboTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

@@ -1,4 +1,4 @@
-package eu.jw.tbo.presentation
+package eu.jw.tbo.presentation.main_screen
 
 import android.os.Parcelable
 import eu.jw.tbo.domain.models.CoinPrice

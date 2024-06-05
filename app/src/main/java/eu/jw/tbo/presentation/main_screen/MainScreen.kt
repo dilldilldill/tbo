@@ -1,4 +1,4 @@
-package eu.jw.tbo.presentation
+package eu.jw.tbo.presentation.main_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

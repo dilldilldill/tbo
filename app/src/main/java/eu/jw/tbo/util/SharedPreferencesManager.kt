@@ -9,7 +9,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
-import eu.jw.tbo.presentation.MainScreenState
+import eu.jw.tbo.presentation.main_screen.MainScreenState
 import java.lang.reflect.Type
 import java.time.Instant
 import java.time.LocalDateTime
