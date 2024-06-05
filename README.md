@@ -1,4 +1,4 @@
-# swapi
+# tbo
 A simple app displaying data taken from CoinGecko API (https://docs.coingecko.com/v3.0.1/reference/introduction)
 using Kotlin, Jetpack Compose, Dagger Hilt, Retrofit and MockWebServer
 
