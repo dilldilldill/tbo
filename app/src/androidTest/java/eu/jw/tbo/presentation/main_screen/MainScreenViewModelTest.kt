@@ -1,10 +1,9 @@
 package eu.jw.tbo.presentation.main_screen
 
 import androidx.lifecycle.SavedStateHandle
-import eu.jw.tbo.data.repository.FakeErrorRepository
-import eu.jw.tbo.data.repository.FakeSuccessRepository
-import eu.jw.tbo.presentation.main_screen.MainScreenEvent
-import eu.jw.tbo.presentation.main_screen.MainScreenViewModel
+import eu.jw.tbo.data.repository.FakeErrorRepositoryImpl
+import eu.jw.tbo.data.repository.FakeSuccessRepositoryImpl
+import eu.jw.tbo.util.SharedPreferencesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -23,15 +22,17 @@ class MainScreenViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
+        SharedPreferencesManager.clear()
+
         successViewModel = MainScreenViewModel(
-            FakeSuccessRepository(),
+            FakeSuccessRepositoryImpl(),
             SavedStateHandle()
         )
         // This is usually called from the MainActivity, so we have to call it manually here
         successViewModel.getCurrentPrice()
 
         errorViewModel = MainScreenViewModel(
-            FakeErrorRepository(),
+            FakeErrorRepositoryImpl(),
             SavedStateHandle()
         )
         // This is usually called from the MainActivity, so we have to call it manually here
@@ -73,7 +74,7 @@ class MainScreenViewModelTest {
     }
 
     @Test
-    fun changedCurrency_success_notEmptyAndUsd() {
+    fun changeCurrency_success_notEmptyAndUsd() {
         val state = successViewModel.state
         successViewModel.onEvent(MainScreenEvent.ChangedCurrency("usd"))
 

@@ -116,7 +116,6 @@ class MainScreenViewModel @Inject constructor(
             if (response is Resource.Error) {
                 savedStateHandle.updateState {
                     it.copy(
-                        priceHistoryLoading = false,
                         supportedCurrenciesError = response.message
                     )
                 }

@@ -1,16 +1,10 @@
 package eu.jw.tbo.di
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import eu.jw.tbo.data.remote.CoinGeckoApi
-import eu.jw.tbo.data.remote.dto.CoinPriceDto
 import eu.jw.tbo.presentation.main_screen.mock_responses.currenciesJson
 import eu.jw.tbo.presentation.main_screen.mock_responses.currentPriceEur
 import eu.jw.tbo.presentation.main_screen.mock_responses.currentPriceUsd
@@ -22,7 +16,6 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.reflect.Type
 import javax.inject.Singleton
 
 @Module
@@ -54,7 +47,7 @@ object TestAppModule {
 
     @Provides
     @Singleton
-    fun provideStarWarsApi(
+    fun provideCoinGeckoApi(
         mockWebServer: MockWebServer
     ): CoinGeckoApi {
         return Retrofit.Builder()
@@ -64,31 +57,3 @@ object TestAppModule {
             .create(CoinGeckoApi::class.java)
     }
 }
-
-fun getCustomDeserializer(): Gson = GsonBuilder().apply {
-    registerTypeAdapter(CoinPriceDto::class.java, object : JsonDeserializer<CoinPriceDto> {
-        override fun deserialize(
-            json: JsonElement?,
-            typeOfT: Type?,
-            context: JsonDeserializationContext?
-        ): CoinPriceDto {
-            var lastUpdatedAt: Long? = null
-            var price: Double? = null
-
-            json?.getAsJsonObject()?.let {
-                for (key in it.keySet()) {
-                    if (key == "last_updated_at") {
-                        // This property is last_updated_at
-                        lastUpdatedAt = json.asJsonObject.get(key).asLong
-
-                    } else {
-                        // The other property is always the one with the price
-                        price = json.asJsonObject.get(key).asDouble
-                    }
-                }
-            }
-
-            return CoinPriceDto(price = price!!, lastUpdatedAt = lastUpdatedAt!!)
-        }
-    })
-}.create()

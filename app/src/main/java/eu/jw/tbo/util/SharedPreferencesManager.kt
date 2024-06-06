@@ -59,4 +59,8 @@ object SharedPreferencesManager {
         val string = sharedPreferences.getString(STATE_KEY, "")
         return gson.fromJson(string, MainScreenState::class.java) ?: MainScreenState()
     }
+
+    fun clear() {
+        sharedPreferences.edit().clear().apply()
+    }
 }

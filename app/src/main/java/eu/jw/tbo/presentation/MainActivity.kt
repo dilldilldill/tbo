@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainScreenPreview() {
     TboTheme {
         MainScreen(
             state = MainScreenState(

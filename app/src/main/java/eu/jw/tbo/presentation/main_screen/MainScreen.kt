@@ -50,8 +50,8 @@ fun MainScreen(
     onEvent: (MainScreenEvent) -> Unit
 ) {
     val numberFormat = NumberFormat.getInstance(Locale.getDefault()).apply {
-        maximumFractionDigits = 2;
-        minimumFractionDigits = 2;
+        maximumFractionDigits = 2
+        minimumFractionDigits = 2
     }
 
     Column(
@@ -59,9 +59,7 @@ fun MainScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!state.supportedCurrenciesError.isNullOrBlank()) {
-            Text(
-                text = "Error: ${state.supportedCurrenciesError}", color = Color.Red
-            )
+            Text(text = "Error: ${state.supportedCurrenciesError}", color = Color.Red)
         }
 
         CurrencySelector(
@@ -74,9 +72,7 @@ fun MainScreen(
         )
 
         if (!state.currentPriceError.isNullOrBlank()) {
-            Text(
-                text = "Error: ${state.currentPriceError}", color = Color.Red
-            )
+            Text(text = "Error: ${state.currentPriceError}", color = Color.Red)
         }
 
         state.currentPrice?.let {
@@ -101,9 +97,7 @@ fun MainScreen(
         }
 
         if (!state.priceHistoryError.isNullOrBlank()) {
-            Text(
-                text = "Error: ${state.priceHistoryError}", color = Color.Red
-            )
+            Text(text = "Error: ${state.priceHistoryError}", color = Color.Red)
         }
 
         if (state.priceHistory.isNotEmpty()) {
@@ -119,9 +113,7 @@ fun PriceTable(prices: List<CoinPrice>, state: MainScreenState, numberFormat: Nu
     val priceColumnWeight = .7f
 
     LazyColumn(
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        Modifier.fillMaxSize().padding(16.dp)
     ) {
         item {
             Row(Modifier.background(Color.Gray)) {

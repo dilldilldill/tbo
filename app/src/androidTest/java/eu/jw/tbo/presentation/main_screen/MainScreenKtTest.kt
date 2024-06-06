@@ -12,6 +12,7 @@ import okhttp3.mockwebserver.MockWebServer
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import eu.jw.tbo.di.AppModule
+import eu.jw.tbo.util.SharedPreferencesManager
 import eu.jw.tbo.util.TestTags
 
 import org.junit.After
@@ -35,13 +36,14 @@ class MainScreenKtTest {
     lateinit var mockServer: MockWebServer
 
     private val numberFormat = NumberFormat.getInstance(Locale.getDefault()).apply {
-        maximumFractionDigits = 2;
-        minimumFractionDigits = 2;
+        maximumFractionDigits = 2
+        minimumFractionDigits = 2
     }
 
     @Before
     fun setUp() {
         hiltRule.inject()
+        SharedPreferencesManager.clear()
     }
 
     @After
